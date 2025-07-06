@@ -6,7 +6,7 @@ on:
       - '**'
 
 env:
-  BUILDROOT_VERSION: 2025.05-rc2
+  BUILDROOT_VERSION: 2025.05
   SDCARD_NAME: sdcard-${{ github.ref_name }}
   CHECKSUMS_FILENAME: checksums-sha256.txt
 
@@ -39,10 +39,10 @@ jobs:
           cd ../buildroot-${BUILDROOT_VERSION}
           make X6100_defconfig
           make
+          mv output/images/sdcard.img output/images/${SDCARD_NAME}.img
       - name: Checksum and zip
         run: |
           cd ../buildroot-${BUILDROOT_VERSION}/output/images
-          mv sdcard.img ${SDCARD_NAME}.img
           sha256sum ${SDCARD_NAME}.img > ${CHECKSUMS_FILENAME}
           zip ${GITHUB_WORKSPACE}/${SDCARD_NAME}.zip ${SDCARD_NAME}.img ${CHECKSUMS_FILENAME}
           cd ${GITHUB_WORKSPACE}
